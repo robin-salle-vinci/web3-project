@@ -1,11 +1,13 @@
 require('dotenv').config();
+const axios = require('axios');
 const { Client, GatewayIntentBits } = require('discord.js');
 
 // Créer une instance du client
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 // Le token du bot
-const token = process.env.DISCORD_TOKEN; // Remplacez VOTRE_TOKEN_ICI par le token du bot
+const token = process.env.DISCORD_TOKEN;
+const chatGPT_token = process.env.CHATGPT_TOKEN;
 
 // L'événement de connexion
 client.once('ready', () => {
