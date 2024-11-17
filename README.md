@@ -14,6 +14,7 @@ Ce projet est un bot Discord qui permet de gérer des événements et d'envoyer 
 - Supprimer des événements existants.
 - Lister tous les événements programmés.
 - Envoyer des rappels pour les événements le jour même et la veille.
+- converser avec le modèle chatGPT3.5 turbo.
 
 ## Architecture
 
@@ -70,6 +71,7 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 ## Réutilisation de code
 
-| Chemin du fichier où se trouve le code réutilisé | Auteur du code source réutilisé | URL où le code réutilisé est disponible | Raison de la réutilisation du code |
-|--------------------------------|---------------------------------|-----------------------------------------|------------------------------------|
-| / (depuis la racine du projet) | Discord.dev | https://discord.com/developers/docs/quick-start/getting-started | Tutoriel pour se lancer dans le developpement des discords bots |
+| Chemin du fichier où se trouve le code réutilisé | Auteur du code source réutilisé | URL où le code réutilisé est disponible                           | Raison de la réutilisation du code                                  |
+|--------------------------------|---------------------------------|---------------------------------------------------------------|-------------------------------------------------------------------|
+| / | Discord.dev                    | https://discord.com/developers/docs/quick-start/getting-started | Tutoriel pour se lancer dans le développement des Discord bots   |
+| /ai_bot/requests/aiml.js | AI/ML API documentation        | https://docs.aimlapi.com/quickstart/setting-up                | Mise en place de l'appel d'API pour interagir avec des modèles AI |
