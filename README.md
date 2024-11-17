@@ -70,13 +70,6 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 
 ## Réutilisation de code
 
-| Chemin du fichier où se trouve | Auteur du code source réutilisé | URL où le code réutilisé est disponible | Raison de la réutilisation du code |
-| le code réutilisé              |                                 |                                         |                                    |
-|--------------------------------|---------------------------------|-----------------------------------------|------------------------------------|
-| /                              | Discord.dev                     | https://discord.com/developers/         | Tutoriel pour se lancer dans le    |
-| (depuis la racine du projet)   |                                 | docs/quick-start/getting-started        | developpement des discords bots    |
-
-
 | Chemin du fichier où se trouve le code réutilisé | Auteur du code source réutilisé | URL où le code réutilisé est disponible | Raison de la réutilisation du code |
 |--------------------------------|---------------------------------|-----------------------------------------|------------------------------------|
 | / (depuis la racine du projet) | Discord.dev | https://discord.com/developers/docs/quick-start/getting-started | Tutoriel pour se lancer dans le developpement des discords bots |
