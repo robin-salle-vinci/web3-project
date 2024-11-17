@@ -15,6 +15,7 @@ Ce projet est un bot Discord qui permet de gérer des événements et d'envoyer 
 - Lister tous les événements programmés.
 - Envoyer des rappels pour les événements le jour même et la veille.
 - converser avec le modèle chatGPT3.5 turbo.
+- création d'un sondage
 
 ## Architecture
 
@@ -64,6 +65,8 @@ Utilisez la commande slash `/deleteevent` avec les options suivantes :
 ### Lister les événements
 
 Utilisez la commande slash `/listevent` pour lister tous les événements programmés.
+
+### Créer un sondage
 
 ## Licence
 
