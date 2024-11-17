@@ -14,26 +14,7 @@ const client = new Client({
 });
 
 // Liste de mots bannis
-const bannedWords = ['connard', 'connasse', 'enculé', 'salope', 'pute', 'pédé', 'nique ta mère', 'nique ton père', 'poufiasse', 
-  'bouffon', 'fils de pute', 'trou du cul', 'enfoiré', 'batard', 'gouine', 'tapette', 'clochard', 'branleur', 
-  'branleuse', 'va te faire foutre', 'je t’emmerde','emmerdeur', 'racaille', 
-  'pute à clic', 'bordel', 'pisseuse', 'ducon', 'pédale', 'pétasse', 'pouffiasse', 'dégénéré', 'crevure',
-  'fuck', 'fucker', 'motherfucker', 'asshole', 'bitch', 'cunt', 'dickhead', 'bastard', 'whore', 'slut', 'cock', 
-  'fucking', 'shithead', 'cocksucker', 'arsehole', 'pussy', 'dildo', 'blowjob', 'cum', 'clit', 'prick', 'boobs', 
-  'nipples', 'penis', 'vagina',
-
-  // Termes discriminatoires racistes, homophobes, et xénophobes (français et anglais)
-  'nigger', 'nigga', 'faggot', 'spic', 'chink', 'kike', 'wop', 'dyke', 'tranny', 'retard', 'pédophile', 'pédé', 
-  'singe', 'bougnoule', 'négro', 'tête de nègre', 'youpin', 'raton', 'romanichel', 'mangeur de chien', 'face de citron', 
-  'niakoué', 'portos', 'chinetoque', 'roumain', 'esquimau', 'féménazie', 'kraut', 'japs', 'bouffeur de curry', 
-  'blédard', 'bougnoul', 'racaille', 'sale étranger', 'sale migrant', 'sale arabe', 'bouffeur de pastèque', 
-  'bicot', 'goudou', 'camé', 'camée', 'schizo', 'mongolien', 'mongol', 'zinzin', 'esclave', 'pirate somalien', 
-  'sans-papiers', 'foutue lesbienne', 'tarlouze', 'lopette', 'queer', 'freak', 'tafiole', 'chacal', 'arabe', 
-  'clodo', 'caillera', 'zigoto', 'fripouille','juif',
-
-  // Variations pour éviter les contournements (avec des caractères spéciaux et majuscules)
-  'p€d€', 'n!gga', 'f@ggot', 'c*nnard', 'a$$hole', 'fûck', 'wh0re', 'sl*t', 'k!ke', 'dyk€', 'p*ssy', 'bi©ot', 'ch!nk',
-  'r€tard', 's@lope', 'conn@rd', 'b@stard', 'g0ud0u', 'pédo', 'nég*o', 'j*p', 'queer'];
+const bannedWords = ['connard', 'connasse', 'enculé', 'salope', 'pute', 'pédé', 'nique ta mère', 'nique ton père', 'poufiasse'];
 
 const newPersonRole = '1306230718199889930'; // ID du rôle à attribuer
 const charteAcceptationRole = '1306230922567356436';
