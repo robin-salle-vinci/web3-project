@@ -16,6 +16,7 @@ Ce projet est un bot Discord qui permet de gérer des événements et d'envoyer 
 - Envoyer des rappels pour les événements le jour même et la veille.
 - converser avec le modèle chatGPT3.5 turbo.
 - Création d'un sondage
+- récuperer les updates d'une chaîne youtube à partir de youtube api
 
 ## Architecture
 
@@ -29,6 +30,7 @@ L'application utilise une architecture MPA (Multi-Page Application) avec du Serv
 - discord-interactions
 - node-cron
 - moment-timezone
+- Google APIs
 
 ## Installation
 
