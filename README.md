@@ -68,6 +68,11 @@ Utilisez la commande slash `/listevent` pour lister tous les événements progra
 
 ### Créer un sondage
 
+Utilisez la commande slash `/poll` pour créer un sondage
+
+-`titre` : le sujet du sondage
+-`option1` : première option
+
 ## Licence
 
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
