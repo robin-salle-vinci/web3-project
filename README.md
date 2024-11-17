@@ -72,6 +72,10 @@ Utilisez la commande slash `/poll` pour créer un sondage
 
 -`titre` : le sujet du sondage
 -`option1` : première option
+-`option2` : deuxième option
+-`option3` : troisième option
+-`option4` : quadrième option
+-`option5` : cinquième option
 
 ## Licence
 
