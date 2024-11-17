@@ -1,68 +1,79 @@
+// Importation des modules nécessaires
 import pkg from 'discord.js';
 const { Client, GatewayIntentBits, Partials, PermissionsBitField, Events } = pkg;
 import fs from 'fs';
 
+// Création du client Discord avec les intentions et les partials nécessaires
 const client = new Client({
   intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.GuildMessages,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.Guilds, // Gestion des serveurs
+    GatewayIntentBits.GuildMembers, // Gestion des membres
+    GatewayIntentBits.GuildMessages, // Gestion des messages sur le serveur
+    GatewayIntentBits.MessageContent, // Accès au contenu des messages
+    GatewayIntentBits.GuildMessageReactions, // Gestion des réactions aux messages
   ],
-  partials: [Partials.Message, Partials.Channel, Partials.Reaction]
+  partials: [Partials.Message, Partials.Channel, Partials.Reaction], // Gestion des données partielles
 });
 
-// Liste de mots bannis
+// Liste des mots bannis détectés par le bot
 const bannedWords = ['connard', 'connasse', 'enculé', 'salope', 'pute', 'pédé', 'nique ta mère', 'nique ton père', 'poufiasse'];
 
-const newPersonRole = '1306230718199889930'; // ID du rôle à attribuer
-const charteAcceptationRole = '1306230922567356436';
-const muteRoleId = '1306219205468880896'; // ID du rôle de mute
-const rulesChannelName = 'chartes-et-regles'; // Nom du canal des règles
-const rulesMessageId = '1306233550005075968'; // ID du message des règles
-const infractionLimit = 3; // Limite d'infractions avant mute
+// IDs des rôles et messages pour les fonctionnalités du bot
+const newPersonRole = '1306230718199889930'; // Rôle attribué aux nouveaux membres
+const charteAcceptationRole = '1306230922567356436'; // Rôle attribué après acceptation des règles
+const muteRoleId = '1306219205468880896'; // Rôle pour mute les utilisateurs
+const rulesChannelName = 'chartes-et-regles'; // Canal contenant les règles
+const rulesMessageId = '1306233550005075968'; // Message des règles à réagir
+const infractionLimit = 3; // Nombre d'infractions avant mute
 const muteDuration = 60000; // Durée du mute en millisecondes (1 minute)
 
+// Lecture du fichier de configuration pour les logs
 let config = JSON.parse(fs.readFileSync('config.json', 'utf8'));
 
+// Map pour suivre les infractions des utilisateurs
 const userInfractions = new Map();
 
+// Événement déclenché lorsque le bot est prêt
 client.on(Events.ClientReady, () => {
   console.log(`Connecté en tant que ${client.user.tag}!`);
 });
 
+// Événement déclenché lorsqu'un nouveau membre rejoint le serveur
 client.on(Events.GuildMemberAdd, member => {
-  const role = member.guild.roles.cache.get(roleId);
+  const role = member.guild.roles.cache.get(newPersonRole); // Récupération du rôle par son ID
   if (role) {
-    member.roles.add(role).catch(console.error);
+    member.roles.add(role).catch(console.error); // Ajout du rôle
   }
 
+  // Envoi d'un message de bienvenue dans le canal "bienvenue"
   const welcomeChannel = member.guild.channels.cache.find(channel => channel.name === 'bienvenue');
   if (welcomeChannel) {
     welcomeChannel.send(`Bienvenue sur le serveur, ${member}!`).catch(console.error);
   }
 });
 
+// Événement déclenché lorsqu'un message est envoyé
 client.on(Events.MessageCreate, async message => {
-  if (message.author.bot) return;
+  if (message.author.bot) return; // Ignorer les messages des bots
 
   const messageContent = message.content.toLowerCase();
   let infraction = false;
 
+  // Vérification si le message contient un mot interdit
   for (const word of bannedWords) {
     if (messageContent.includes(word)) {
-      message.delete().catch(console.error);
+      message.delete().catch(console.error); // Suppression du message
       message.channel.send(`${message.author}, ce mot est interdit !`).then(msg => {
-        setTimeout(() => msg.delete(), 5000);
+        setTimeout(() => msg.delete(), 5000); // Suppression du message d'avertissement après 5 secondes
       }).catch(console.error);
 
-      logModerationAction(message.guild, `${message.author.tag} a utilisé un mot interdit : ${word}`);
+      logModerationAction(message.guild, `${message.author.tag} a utilisé un mot interdit : ${word}`); // Journalisation
       infraction = true;
       break;
     }
   }
 
+  // Gestion des infractions si un mot interdit est détecté
   if (infraction) {
     const userId = message.author.id;
     if (!userInfractions.has(userId)) {
@@ -72,6 +83,7 @@ client.on(Events.MessageCreate, async message => {
 
     console.log(`Infractions pour ${message.author.tag}: ${userInfractions.get(userId)}`);
 
+    // Mute temporaire si l'utilisateur dépasse la limite d'infractions
     if (userInfractions.get(userId) >= infractionLimit) {
       const muteRole = message.guild.roles.cache.get(muteRoleId);
       const member = message.member;
@@ -80,23 +92,22 @@ client.on(Events.MessageCreate, async message => {
         try {
           // Sauvegarde des anciens rôles dans une variable
           const oldRoles = member.roles.cache.filter(role => role.id !== message.guild.id && role.id !== muteRoleId);
-          await member.roles.remove(oldRoles);
-          await member.roles.add(muteRole);
+          await member.roles.remove(oldRoles); // Retrait des anciens rôles
+          await member.roles.add(muteRole); // Attribution du rôle de mute
           console.log(`Rôle de mute ajouté pour ${message.author.tag}`);
 
           message.author.send(`Vous avez été mute pour 1 minute pour avoir enfreint les règles à plusieurs reprises.`).catch(console.error);
 
-          // Retirer le rôle de mute après la durée et restaurer les rôles
+          // Retrait du mute et restauration des rôles après la durée définie
           setTimeout(async () => {
             try {
-              // Vérifier si l'utilisateur est toujours présent sur le serveur
               const currentMember = await message.guild.members.fetch(userId).catch(console.error);
               if (!currentMember) return;
 
               await currentMember.roles.remove(muteRole);
               console.log(`Rôle de mute retiré pour ${message.author.tag}`);
 
-              // Restaurer les anciens rôles
+              // Restauration des anciens rôles
               await currentMember.roles.add(oldRoles);
               console.log(`Rôles restaurés pour ${message.author.tag}`);
               message.author.send(`Vous n'êtes plus mute.`).catch(console.error);
@@ -105,7 +116,7 @@ client.on(Events.MessageCreate, async message => {
             }
           }, muteDuration);
 
-          // Réinitialiser les infractions après le mute
+          // Réinitialisation des infractions
           userInfractions.set(userId, 0);
         } catch (error) {
           console.error("Erreur lors de l'attribution du rôle de mute :", error);
@@ -117,31 +128,31 @@ client.on(Events.MessageCreate, async message => {
   }
 });
 
-
-
+// Événement déclenché lorsqu'une réaction est ajoutée à un message
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
   if (user.bot) return;
 
   if (reaction.message.partial) {
     try {
-      await reaction.message.fetch();
+      await reaction.message.fetch(); // Récupération du message si partiel
     } catch (error) {
       console.error("Erreur lors de la récupération du message :", error);
       return;
     }
   }
 
+  // Vérification si la réaction est sur le message des règles
   if (reaction.message.id === rulesMessageId && reaction.message.channel.name === rulesChannelName) {
     try {
-      const member = await reaction.message.guild.members.fetch(user.id);
+      const member = await reaction.message.guild.members.fetch(user.id); // Récupération du membre
       const accessRole = reaction.message.guild.roles.cache.get(charteAcceptationRole);
       const initialRole = reaction.message.guild.roles.cache.get(newPersonRole);
 
+      // Ajout du rôle d'accès et retrait du rôle initial
       if (accessRole && member) {
         await member.roles.add(accessRole);
         console.log(`Rôle ajouté à ${user.tag}`);
       }
-
       if (initialRole && member) {
         await member.roles.remove(initialRole);
         console.log(`Rôle supprimé pour ${user.tag}`);
@@ -151,8 +162,6 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
     }
   }
 });
-
-
 
 client.on(Events.MessageCreate, message => {
   if (message.content.startsWith('!setlogchannel')) {
@@ -212,6 +221,8 @@ Pour toute question, contactez un administrateur !`;
 });
 
 
+
+// Fonction pour journaliser les actions de modération
 function logModerationAction(guild, action) {
   const guildId = guild.id;
   const logChannelName = config[guildId] ? config[guildId].logChannelName : 'modération';
@@ -221,4 +232,5 @@ function logModerationAction(guild, action) {
   }
 }
 
+// Connexion au bot avec le token (déplacez ce token dans un fichier .env pour plus de sécurité)
 client.login('MTI5ODI3ODYzMjA2MTQwMzIxNg.GKPJ9p.nlnrXwUCAHnbdVULSG7X0r32bqfNsIc_Wn8OPI'); 
