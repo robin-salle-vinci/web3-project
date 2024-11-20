@@ -16,6 +16,9 @@ const app = express();
 // Get port, or default to 3000
 const PORT = process.env.PORT || 3000;
 
+// Object to store active polls
+const polls = {};
+
 // Store for in-progress games. In production, you'd want to use a DB
 const events = {};
 
@@ -34,14 +37,50 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     return res.send({ type: InteractionResponseType.PONG });
   }
 
-  /**
-   * Handle slash command requests
-   * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
-   */
   if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name, options } = data;
+    const { name, options } = data || {};
 
-    if (name === 'addevent') {
+    if (name === 'poll' && options) {
+      const title = options.find(opt => opt.name === 'title')?.value || "Titre non défini";
+      
+      // Collecte des options du sondage (optionnelles)
+      const pollOptions = [];
+      for (let i = 1; i <= 5; i++) {
+        const option = options.find(opt => opt.name === `option${i}`)?.value;
+        if (option) {
+          pollOptions.push({ name: option, votes: 0 });
+        }
+      }
+
+      // ID unique pour chaque sondage
+      const pollId = id;
+      polls[pollId] = { title, options: pollOptions };
+
+      // Création du message du sondage avec des boutons dynamiques
+      const pollContent = `**${title}**\n` + pollOptions.map((opt, index) => `${index + 1}️⃣ ${opt.name}`).join('\n');
+
+      // Création des boutons pour chaque option
+      const components = [
+        {
+          type: 1,
+          components: pollOptions.map((opt, index) => ({
+            type: 2,
+            label: `${index + 1}️⃣ ${opt.name}`,
+            style: 1,
+            custom_id: `vote_${pollId}_option${index + 1}`,
+          })),
+        },
+      ];
+
+      // Réponse avec le sondage et ses boutons
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: pollContent,
+          components,
+        },
+      });
+    } else if (name === 'addevent') {
       const dateOption = options.find(option => option.name === 'date');
       const timeOption = options.find(option => option.name === 'heure');
       const descriptionOption = options.find(option => option.name === 'description');
@@ -93,7 +132,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            //content: `Event on ${date} at ${time} removed.`,
             content: `Événement le ${date} à ${time} supprimé.`,
           },
         });
@@ -105,7 +143,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            //content: 'No events found.',
             content: 'Aucun événement trouvé.',
           },
         });
@@ -125,6 +162,44 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
 
     console.error(`unknown command: ${name}`);
     return res.status(400).json({ error: 'unknown command' });
+  }
+
+  if (type === InteractionType.MESSAGE_COMPONENT) {
+    const customId = data.custom_id;
+    const [_, pollId, option] = customId.split("_");
+
+    if (polls[pollId] && option.startsWith('option')) {
+      // Incrémentation des votes
+      const optionIndex = parseInt(option.replace('option', '')) - 1;
+      polls[pollId].options[optionIndex].votes += 1;
+
+      // Récupérer les résultats du sondage
+      const results = polls[pollId];
+      const resultsMessage = `**${results.title}**\n` + // Ajout du titre du sondage
+        results.options.map((opt, index) => `${index + 1}️⃣ ${opt.name}: ${opt.votes} votes`).join('\n');
+
+      // Mise à jour du message avec les résultats
+      return res.send({
+        type: InteractionResponseType.UPDATE_MESSAGE,
+        data: {
+          content: resultsMessage, // Affichage du titre + des résultats
+          components: [
+            {
+              type: 1,
+              components: results.options.map((opt, index) => ({
+                type: 2,
+                label: `${index + 1}️⃣ ${opt.name}`,
+                style: 1,
+                custom_id: `vote_${pollId}_option${index + 1}`,
+              })),
+            },
+          ], // Les boutons restent visibles
+        },
+      });
+    } else {
+      // Interaction inconnue
+      return res.status(400).json({ error: 'Interaction inconnue' });
+    }
   }
 
   console.error('unknown interaction type', type);
@@ -156,7 +231,6 @@ cron.schedule('* * * * *', () => {
           if (channel) {
             console.log("Checking permissions for channel:", channel.name);
             const permissions = channel.permissionsFor(client.user);
-            // console.log("Permissions:", permissions.toArray());
             if (permissions.has('SendMessages')) {
               console.log("Sending message to channel:", channel.name);
               if (isToday) {

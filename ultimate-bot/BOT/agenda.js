@@ -13,8 +13,6 @@ const { Client, GatewayIntentBits } = pkg;
 
 // Create an express app
 const app = express();
-// Get port, or default to 3000
-const PORT = process.env.PORT || 3000;
 
 // Store for in-progress games. In production, you'd want to use a DB
 const events = {};
@@ -27,19 +25,8 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
   // Interaction type and data
   const { type, id, data, channel_id } = req.body;
 
-  /**
-   * Handle verification requests
-   */
-  if (type === InteractionType.PING) {
-    return res.send({ type: InteractionResponseType.PONG });
-  }
-
-  /**
-   * Handle slash command requests
-   * See https://discord.com/developers/docs/interactions/application-commands#slash-commands
-   */
   if (type === InteractionType.APPLICATION_COMMAND) {
-    const { name, options } = data;
+    const { name, options } = data || {};
 
     if (name === 'addevent') {
       const dateOption = options.find(option => option.name === 'date');
@@ -93,7 +80,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            //content: `Event on ${date} at ${time} removed.`,
             content: `Événement le ${date} à ${time} supprimé.`,
           },
         });
@@ -105,7 +91,6 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            //content: 'No events found.',
             content: 'Aucun événement trouvé.',
           },
         });
@@ -156,7 +141,6 @@ cron.schedule('* * * * *', () => {
           if (channel) {
             console.log("Checking permissions for channel:", channel.name);
             const permissions = channel.permissionsFor(client.user);
-            // console.log("Permissions:", permissions.toArray());
             if (permissions.has('SendMessages')) {
               console.log("Sending message to channel:", channel.name);
               if (isToday) {
@@ -196,6 +180,4 @@ cron.schedule('* * * * *', () => {
 
 client.login(process.env.DISCORD_TOKEN);
 
-app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});
+export { app };
