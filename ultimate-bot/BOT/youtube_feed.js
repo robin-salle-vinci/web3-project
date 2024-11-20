@@ -19,6 +19,8 @@ discordClient.login(process.env.DISCORD_TOKEN);
 // Store posted video IDs to avoid duplicates
 const postedVideoIds = new Set();
 
+console.log('YouTube feed bot is running!');
+
 // Function to fetch YouTube videos
 async function fetchYouTubeVideos(channelId) {
   try {

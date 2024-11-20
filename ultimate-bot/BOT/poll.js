@@ -15,6 +15,7 @@ const polls = {};
  * Parse request body and verifies incoming requests using discord-interactions package
  */
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
+  console.log('Received request in poll.js');
   // Interaction type and data
   const { type, id, data } = req.body;
 

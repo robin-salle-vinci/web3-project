@@ -11,8 +11,8 @@ import moment from 'moment-timezone';
 
 const { Client, GatewayIntentBits } = pkg;
 
-// Create an express app
-const app = express();
+// Create an express router
+const app = express.Router();
 
 // Store for in-progress games. In production, you'd want to use a DB
 const events = {};
@@ -22,6 +22,7 @@ const events = {};
  * Parse request body and verifies incoming requests using discord-interactions package
  */
 app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async function (req, res) {
+  console.log('Received request in agenda.js');
   // Interaction type and data
   const { type, id, data, channel_id } = req.body;
 
@@ -180,4 +181,4 @@ cron.schedule('* * * * *', () => {
 
 client.login(process.env.DISCORD_TOKEN);
 
-export { app };
+export { app as agendaApp };

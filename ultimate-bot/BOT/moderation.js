@@ -1,4 +1,3 @@
-// Importation des modules nécessaires
 import pkg from 'discord.js';
 const { Client, GatewayIntentBits, Partials, PermissionsBitField, Events } = pkg;
 import fs from 'fs';
@@ -16,7 +15,7 @@ const client = new Client({
 });
 
 // Liste des mots bannis détectés par le bot
-const bannedWords = ['connard', 'connasse', 'enculé', 'salope', 'pute', 'pédé', 'nique ta mère', 'nique ton père', 'poufiasse'];
+const bannedWords = ['vide'];
 
 // IDs des rôles et messages pour les fonctionnalités du bot
 const newPersonRole = '1306230718199889930'; // Rôle attribué aux nouveaux membres
@@ -220,8 +219,6 @@ Pour toute question, contactez un administrateur !`;
   }
 });
 
-
-
 // Fonction pour journaliser les actions de modération
 function logModerationAction(guild, action) {
   const guildId = guild.id;
@@ -233,4 +230,6 @@ function logModerationAction(guild, action) {
 }
 
 // Connexion au bot avec le token (déplacez ce token dans un fichier .env pour plus de sécurité)
-client.login('process.env.DISCORD_TOKEN'); 
+client.login(process.env.DISCORD_TOKEN);
+
+export { client as moderationClient };
