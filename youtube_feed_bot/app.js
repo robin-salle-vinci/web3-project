@@ -1,13 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
-import {
-  InteractionType,
-  InteractionResponseType,
-  verifyKeyMiddleware,
-} from 'discord-interactions';
-import { Client, GatewayIntentBits } from 'discord.js';
+import fs from 'fs';
+import { Client, GatewayIntentBits, ChannelType } from 'discord.js';
 import { google } from 'googleapis';
-
 
 // Initialize YouTube client
 const youtube = google.youtube({
@@ -16,7 +11,7 @@ const youtube = google.youtube({
 });
 
 // Initialize Discord client
-const discordClient = new Client({ intents: [GatewayIntentBits.Guilds] });
+const discordClient = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
 discordClient.once('ready', () => {
   console.log('Discord bot is ready!');
@@ -24,8 +19,25 @@ discordClient.once('ready', () => {
 
 discordClient.login(process.env.DISCORD_TOKEN);
 
-// Store posted video IDs to avoid duplicates
-const postedVideoIds = new Set();
+// Load posted video IDs from JSON file
+let postedVideoIds = new Set();
+try {
+  const data = fs.readFileSync('postedVideoIds.json', 'utf8');
+  postedVideoIds = new Set(JSON.parse(data));
+  console.log('Loaded posted video IDs:', postedVideoIds);
+} catch (error) {
+  console.error('Error loading posted video IDs:', error);
+}
+
+// Function to save posted video IDs to JSON file
+function savePostedVideoIds() {
+  try {
+    fs.writeFileSync('postedVideoIds.json', JSON.stringify([...postedVideoIds]), 'utf8');
+    console.log('Saved posted video IDs');
+  } catch (error) {
+    console.error('Error saving posted video IDs:', error);
+  }
+}
 
 // Function to fetch YouTube videos
 async function fetchYouTubeVideos(channelId) {
@@ -54,7 +66,8 @@ async function postYouTubeVideosToDiscord() {
   }
   const channel = await discordClient.channels.fetch(process.env.DISCORD_CHANNEL_ID);
   console.log(`Fetched channel: ${channel.name}`);
-  for (const video of videos) {
+  // Reverse the order of the videos array to post the newest video last
+  for (const video of videos.reverse()) {
     const videoId = video.id.videoId;
     if (postedVideoIds.has(videoId)) {
       console.log(`Skipping already posted video: ${videoId}`);
@@ -66,6 +79,7 @@ async function postYouTubeVideosToDiscord() {
       await channel.send(`${video.snippet.title}\n${videoUrl}`);
       console.log(`Successfully posted video: ${videoUrl}`);
       postedVideoIds.add(videoId); // Add video ID to the set
+      savePostedVideoIds(); // Save posted video IDs to JSON file
     } catch (error) {
       console.error(`Error posting video: ${videoUrl}`, error);
     }
@@ -73,7 +87,7 @@ async function postYouTubeVideosToDiscord() {
 }
 
 // Set an interval to fetch and post YouTube videos every 5 minutes
-setInterval(postYouTubeVideosToDiscord, 300000);
+setInterval(postYouTubeVideosToDiscord, 3000);
 
 // Create an Express app
 const app = express();
