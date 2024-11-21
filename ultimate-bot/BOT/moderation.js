@@ -15,14 +15,14 @@ const client = new Client({
 });
 
 // Liste des mots bannis détectés par le bot
-const bannedWords = ['vide'];
+const bannedWords = ['vide',"mot1","mot2","mot3"];
 
 // IDs des rôles et messages pour les fonctionnalités du bot
-const newPersonRole = '1306230718199889930'; // Rôle attribué aux nouveaux membres
-const charteAcceptationRole = '1306230922567356436'; // Rôle attribué après acceptation des règles
-const muteRoleId = '1306219205468880896'; // Rôle pour mute les utilisateurs
+const newPersonRole = '1303363053265358848'; // Rôle attribué aux nouveaux membres
+const charteAcceptationRole = '1303345399918100551'; // Rôle attribué après acceptation des règles
+const muteRoleId = '1303357793398423593'; // Rôle pour mute les utilisateurs
 const rulesChannelName = 'chartes-et-regles'; // Canal contenant les règles
-const rulesMessageId = '1306233550005075968'; // Message des règles à réagir
+const rulesMessageId = '1303374683739131987'; // Message des règles à réagir
 const infractionLimit = 3; // Nombre d'infractions avant mute
 const muteDuration = 60000; // Durée du mute en millisecondes (1 minute)
 
@@ -209,9 +209,6 @@ client.on(Events.MessageCreate, message => {
 
 5. **Bienvenue et attribution de rôle par défaut :**
    - Lorsqu'un nouvel utilisateur rejoint le serveur, il reçoit automatiquement le rôle avec l’ID **${newPersonRole}** et un message de bienvenue est envoyé dans le canal **bienvenue**.
-
-6. **Détection et suppression de liens et d'images inappropriées :**
-   - Les messages contenant des liens ou des images sont surveillés selon les règles de modération.
 
 Pour toute question, contactez un administrateur !`;
 

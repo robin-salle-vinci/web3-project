@@ -102,6 +102,30 @@ Utilisez la commande slash `/poll` pour créer un sondage.
 # Dialoguer avec le bot
 Utilisez la commande `!chat` suivi de votre requête.
 
+# Filtre de mots interdits
+Le bot possède une liste de mots interdits qui sont instantanément supprimés.
+
+# Lister les possibilités du bot
+
+Utilisez la commande `!help` pour lister toutes les possibilités du bot.
+
+# Attribution d'un rôle mute après 3 infractions
+
+Après avoir commis 3 infractions, le bot vous attribue le rôle qui vous enlève la capacité de pouvoir écrire dans n'importe quel canal de discussion.
+
+# Message de bienvenue et attribution de rôle par défaut 
+
+Lorsqu'un nouvel utilisateur rejoint le serveur, il reçoit automatiquement un rôle défini par les modérateurs du serveur sans qu'ils doivent le faire manuellement, et un message de bienvenue est envoyé dans le canal "bienvenue".
+
+# Choix du canal où se trouvent les logs de modération
+ 
+Avec le rôle Admin, on peut utiliser la commande `!setlogchannel [nom du canal]` avec laquelle on définit le canal dans lequel les actions de modération seront enregistrées.
+
+# Système de réaction pour les règles 
+
+Dans le canal "chartes-et-regles", un utilisateur peut obtenir le rôle de membre en réagissant au message qui répertorie les règles. Cela donnera un accès global au serveur hormis les canaux réservés aux administrateurs.
+
+
 ## Licence
 
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.

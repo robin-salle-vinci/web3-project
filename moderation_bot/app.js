@@ -211,8 +211,6 @@ client.on(Events.MessageCreate, message => {
 5. **Bienvenue et attribution de rôle par défaut :**
    - Lorsqu'un nouvel utilisateur rejoint le serveur, il reçoit automatiquement le rôle avec l’ID **${newPersonRole}** et un message de bienvenue est envoyé dans le canal **bienvenue**.
 
-6. **Détection et suppression de liens et d'images inappropriées :**
-   - Les messages contenant des liens ou des images sont surveillés selon les règles de modération.
 
 Pour toute question, contactez un administrateur !`;
 
