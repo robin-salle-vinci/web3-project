@@ -46,6 +46,7 @@ Les bots utilise l'API Discord pour recevoir des commandes slash ou ! et envoyer
 - moment-timezone
 - Google APIs
 - AI/ML API
+- Katabump
 
 ## Installation
 
