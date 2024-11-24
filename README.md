@@ -68,7 +68,7 @@ Les bots utilisent l'API Discord pour recevoir des commandes slash ou ! et envoy
    - API_KEY des technologies tierces(AI/ML, Youtube,...)
 5. Démarrez l'application :
    - npm run dev
-   (+ngrok ?)
+6. Mettre en place ngrok en se référant au tutoriel (Step 3: Handling interactivity) : https://discord.com/developers/docs/quick-start/getting-started
 
 ### Utilisation
 
@@ -92,6 +92,8 @@ Utilisez la commande slash `/deleteevent` avec les options suivantes :
 ##### Lister les événements
 
 Utilisez la commande slash `/listevent` pour lister tous les événements programmés.
+
+#### Bot pour la création de sondages et votes
 
 ##### Créer un sondage
 
@@ -139,7 +141,7 @@ Cela donnera un accès global au serveur hormis les canaux réservés aux admini
 
 #### Bot de notifications YouTube
 
-#### Bot de création de sondages et votes
+Ce bot permet de recevoir toutes les notifications d'une chaine Youtube dans le channel de votre choix.
 
 ### Licence
 
@@ -152,3 +154,5 @@ Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 |-|-|-|-|
 |/|Discord.dev|https://discord.com/developers/docs/quick-start/getting-started|Tutoriel pour se lancer dans le développement des Discord bots|
 |/ai_bot/requests/aiml.js|AI/ML API documentation|https://docs.aimlapi.com/quickstart/setting-up|Mise en place de l'appel à l'API AI/ML pour interagir avec le modèle IA|
+|/|chatGPT|https://openai.com/chatgpt/overview/| Aide pour la production de code|
+|/|Github Copilot|https://github.com/github-copilot/signup/copilot_individual| Aide pour la production du code|
