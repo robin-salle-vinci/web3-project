@@ -7,7 +7,7 @@ Parmi ces bots, nous pouvons retrouver un gestionnaire d'agenda, un modérateur 
 
 ## Fonctionnalités
 
-### Bot gestionnaire d'agenda
+### |Bot gestionnaire d'agenda|
 
 - Ajouter des événements avec une date, une heure et une description.
 - Supprimer des événements existants.
