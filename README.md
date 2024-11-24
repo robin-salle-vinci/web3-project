@@ -72,7 +72,7 @@ Les bots utilisent l'API Discord pour recevoir des commandes slash ou ! et envoy
 
 ### Utilisation
 
-#### Bot de gestionnaire d'agenda
+#### |Bot de gestionnaire d'agenda|
 
 ##### Ajouter un événement
 
@@ -93,7 +93,7 @@ Utilisez la commande slash `/deleteevent` avec les options suivantes :
 
 Utilisez la commande slash `/listevent` pour lister tous les événements programmés.
 
-#### Bot pour la création de sondages et votes
+#### |Bot pour la création de sondages et votes|
 
 ##### Créer un sondage
 
@@ -106,13 +106,13 @@ Utilisez la commande slash `/poll` pour créer un sondage.
 - `option4` : quatrième option
 - `option5` : cinquième option
 
-#### Chatbot avec le modèle chatGPT3.5
+#### |Chatbot avec le modèle chatGPT3.5|
 
 ##### Dialoguer avec le bot
 
 Utilisez la commande `!chat` suivi de votre requête.
 
-#### Bot pour la modération
+#### |Bot pour la modération|
 
 ##### Filtre de mots interdits
 
@@ -139,7 +139,7 @@ Avec le rôle Admin, on peut utiliser la commande `!setlogchannel [nom du canal]
 Dans le canal "chartes-et-regles", un utilisateur peut obtenir le rôle de membre en réagissant au message qui répertorie les règles.
 Cela donnera un accès global au serveur hormis les canaux réservés aux administrateurs.
 
-#### Bot de notifications YouTube
+#### |Bot de notifications YouTube|
 
 Ce bot permet de recevoir toutes les notifications d'une chaine Youtube dans le channel de votre choix.
 
