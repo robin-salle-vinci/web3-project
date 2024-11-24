@@ -14,19 +14,19 @@ Parmi ces bots, nous pouvons retrouver un gestionnaire d'agenda, un modérateur 
 - Lister tous les événements programmés.
 - Envoyer des rappels pour les événements le jour même et la veille.
 
-### Chatbot avec le modèle chatGPT3.5
+### |Chatbot avec le modèle chatGPT3.5|
 
 - Converser avec le modèle chatGPT3.5 turbo.
 
-### Bot générateur de sondages et votes
+### |Bot générateur de sondages et votes|
 
 - Création d'un sondage
 
-### Bot de notifications YouTube
+### |Bot de notifications YouTube|
 
 - Récupérer les mises à jour d'une chaîne YouTube à partir de YouTube API
 
-### Bot de modération de serveur
+### |Bot de modération de serveur|
 
 - Modération des mots interdits
 - Système de mute
